@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/YOUR_USERNAME/Trend.git'
+                git branch: 'main', url: 'https://github.com/sowmyakc26/Trend.git'
             }
         }
 
