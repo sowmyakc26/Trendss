@@ -16,8 +16,12 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                sh "docker build -t $IMAGE:v1 ."
+    steps {
+        sh 'pwd'
+        sh 'ls -la'
+        sh 'docker build -t trend-app:v1 .'
+    }
+}
             }
         }
 
