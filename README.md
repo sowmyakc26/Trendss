@@ -1,11 +1,14 @@
- Trend Application: Production-Ready Deployment
+ *Trend Application: Production-Ready Deployment*
 This project demonstrates a full DevOps lifecycle for a React application, utilizing Terraform for IaC, Jenkins for CI/CD, Docker for containerization, and Amazon EKS for orchestration.
+
  Architecture Overview
-Frontend: React.js (running on Port 3000 via K8s Service)
-CI/CD: Jenkins (Pipeline-as-code)
-Infrastructure: AWS (VPC, EC2, EKS) via Terraform
-Container Registry: DockerHub
-Monitoring: Prometheus & Grafana
+	
+Frontend: React.js (running on Port 3000 via K8s Service) 
+ CI/CD: Jenkins (Pipeline-as-code) 
+ Infrastructure: AWS (VPC, EC2, EKS) via Terraform 
+ Container Registry: DockerHub  
+ Monitoring: Prometheus & Grafana
+	
  Setup Instructions
 1. Infrastructure Provisioning
 Navigate to the terraform/ directory and initialize the environment:
@@ -15,6 +18,7 @@ terraform plan
 terraform apply --auto-approve
 
 This creates the VPC, IAM roles for EKS, and an EC2 instance pre-configured with Jenkins.
+
 2. Local Docker Testing
 To verify the application locally before pushing:
 bash
@@ -22,6 +26,7 @@ docker build -t trend-app .
 docker run -p 3000:80 trend-app
 
 Access the app at http://3.81.200.248:3000.
+
 3. Kubernetes Configuration
 Ensure your kubectl context is set to the new EKS cluster:
 bash
@@ -29,17 +34,27 @@ aws eks update-kubeconfig --region us-east-1 --name trend-cluster
    
  CI/CD Pipeline Explanation
 The Jenkins Pipeline is defined in the Jenkinsfile and consists of 4 main stages:
+
 Checkout: Pulls the latest code from the GitHub repository.
+
 Build: Creates a Docker image using the production-ready Dockerfile.
+
 Push: Tags and pushes the image to DockerHub using stored credentials.
+
 Deploy: Updates the deployment.yaml with the new image tag and applies it to the EKS Cluster using kubectl.
+
 Webhook Integration:
+
 Any push to the main branch triggers an automatic build via the GitHub Webhook pointing to http://3.81.125.121:8080/github-webhook/.
  Monitoring
 We use the Prometheus Stack for health checks:
+
 Prometheus: Scrapes metrics from the EKS nodes and React pods.
+
 Grafana: Visualizes cluster CPU, Memory, and Network usage.
+
 Access: Port-forward the Grafana service to view the dashboard:
+
 bash
 kubectl port-forward svc/prometheus-grafana 8081:80
    
@@ -48,15 +63,18 @@ GitHub Repository: [https://github.com/sowmyakc26/Trendss.git]
    LoadBalancer ARN/URL:aacf69246f3c6430eaac17c5d7632905-1080697447.us-east-1.elb.amazonaws.com
 Run the following command to get your live URL:
 kubectl get svc trend-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-📂 Project Structure
+
+ Project Structure
+	
 text
-├── .github/            # GitHub Actions/Webhooks
-├── k8s/                # Kubernetes Manifests (Deploy/Svc)
-├── terraform/          # Infrastructure code (main.tf, variables.tf)
-├── Dockerfile          # Container configuration
-├── Jenkinsfile         # CI/CD Pipeline script
-├── .dockerignore       # Files to exclude from Docker build
-└── README.md           # Project documentation
+
+├── .github/            # GitHub Actions/Webhooks 
+├── k8s/                # Kubernetes Manifests (Deploy/Svc)  
+├── terraform/          # Infrastructure code (main.tf, variables.tf)  
+├── Dockerfile          # Container configuration  
+├── Jenkinsfile         # CI/CD Pipeline script 
+├── .dockerignore       # Files to exclude from Docker build 
+└── README.md           # Project documentation 
 
 screenshots
 
